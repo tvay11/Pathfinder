@@ -1,0 +1,19 @@
+.map-container {
+  height: 100%;
+  width: 80%;
+}
+
+
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 400px;
+}
+
+.mapArea {
+  flex-grow: 1;
+}
+
