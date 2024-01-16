@@ -57,7 +57,7 @@ export function Places() {
                 .then(data => {
                     console.log('Route data:', data);
                     setRouteData(data);
-                    navigate('/Result', { state: { routeData: data } });
+                    // navigate('/Result', { state: { routeData: data } });
                 })
                 .catch(error => {
                     console.error('Error fetching route:', error);
@@ -102,7 +102,6 @@ export function Places() {
                 </div>
                 <div
                     style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '10px'}}>
-                    {/* Add Waypoint button */}
                     <IconButton
                         aria-label="Add waypoint"
                         icon={<AddIcon/>}
@@ -130,7 +129,7 @@ export function Places() {
                 >
                     Make Route
                 </Button>
-                {/*<RouteDisplay routeData={routeData}/>*/}
+                <RouteDisplay routeData={routeData}/>
             </div>
 
             <div style={{flexGrow: 1}}>
