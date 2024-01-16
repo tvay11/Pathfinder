@@ -30,7 +30,7 @@ import {
                     }}
                 >
                     <VStack spacing={5} align="stretch">
-                        <Heading as="h3" size="lg">Route Details</Heading>
+                        <Heading as="h6" size="md" style ={{marginTop:'3vh'}}>Route Details</Heading>
                         {routeData.legs.map((leg, index) => (
                             <Box key={index} p={4} shadow="md" borderWidth="1px" borderRadius="md">
                                 <Text fontWeight="bold">Leg {index + 1}</Text>

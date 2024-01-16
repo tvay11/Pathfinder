@@ -4,7 +4,7 @@ import {AddIcon, DeleteIcon} from "@chakra-ui/icons";
 import RouteDisplay from "./RouteDisplay";
 import usePlacesAutocomplete, {getGeocode, getLatLng} from "use-places-autocomplete";
 import {Map} from "./Map";
-
+import { useNavigate } from 'react-router-dom';
 export function Places() {
     const [start, setStart] = useState(null);
     const [end, setEnd] = useState(null);
@@ -18,6 +18,7 @@ export function Places() {
     const removeWaypoint = (id) => {
         setWaypoints(waypoints.filter(waypoint => waypoint.id !== id));
     };
+    const navigate = useNavigate();
 
     const makeRoute = () => {
         console.log('Start Location:', start);
@@ -56,6 +57,7 @@ export function Places() {
                 .then(data => {
                     console.log('Route data:', data);
                     setRouteData(data);
+                    navigate('/Result', { state: { routeData: data } });
                 })
                 .catch(error => {
                     console.error('Error fetching route:', error);
@@ -128,7 +130,7 @@ export function Places() {
                 >
                     Make Route
                 </Button>
-                <RouteDisplay routeData={routeData}/>
+                {/*<RouteDisplay routeData={routeData}/>*/}
             </div>
 
             <div style={{flexGrow: 1}}>
