@@ -1,5 +1,5 @@
 
-# PathFinder
+# Pathfinder
 
 ## Introduction
 
