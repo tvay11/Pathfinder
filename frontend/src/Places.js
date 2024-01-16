@@ -57,7 +57,7 @@ export function Places() {
                 .then(data => {
                     console.log('Route data:', data);
                     setRouteData(data);
-                    // navigate('/Result', { state: { routeData: data } });
+                    navigate('/Result', { state: { routeData: data } });
                 })
                 .catch(error => {
                     console.error('Error fetching route:', error);
