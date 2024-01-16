@@ -68,13 +68,13 @@ export function Places() {
     return (
         <div style={{display: 'flex', height: '100vh'}}>
             <div style={{width: '18%', padding: '1rem'}}>
-                <Heading as="h3" size="lg">Locations</Heading>
+                <Heading as="h3" size="lg" style={{paddingLeft:'0.5vw'}}>Pathfinder</Heading>
                 <PlacesAutocomplete onSelect={setStart} label="Starting Location"/>
 
                 {waypoints.map((waypoint, index) => (
                     <div key={waypoint.id}
                          style={{display: 'flex', alignItems: 'center', marginTop: '10px', width: '100%'}}>
-                        <div style={{flexGrow: 1, marginRight: '10px'}}> {/* This div is to allow the input to grow */}
+                        <div style={{flexGrow: 1, marginRight: '10px'}}>
                             <PlacesAutocomplete
                                 onSelect={(location) => {
                                     const updatedWaypoints = waypoints.map((wp) =>

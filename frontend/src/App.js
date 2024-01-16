@@ -11,6 +11,10 @@ function App() {
     libraries: ["places"],
   });
 
+    useEffect(() => {
+        document.title = "Pathfinder";
+    }, []);
+
   if (loadError) return <div>Error loading maps</div>;
   if (!isLoaded) return <div>Loading...</div>;
 
