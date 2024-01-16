@@ -18,7 +18,7 @@ This project is a Java Spring application that integrates with Google Map API. I
 
 1. Clone the repository:
    ```sh
-   git clone [repository-url]
+   git clone git@github.com:tvay11/Pathfinder.git
    ```
 2. Navigate to the backend directory:
    ```sh
