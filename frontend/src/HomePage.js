@@ -6,7 +6,6 @@ import {
 } from "@chakra-ui/react";
 import {RouteDisplay} from "./RouteDisplay";
 import {Map} from "./Map";
-import {useNavigate} from 'react-router-dom';
 import './App.css';
 import RoutePlannerForm from "./RoutePlanner";
 
