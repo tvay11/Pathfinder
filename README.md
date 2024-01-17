@@ -5,6 +5,10 @@
 
 This project is a Java Spring application that integrates with Google Map API. It features a React frontend utilizing Chakra UI for a responsive and modern user interface. This application is designed to provide mapping and location-based solutions with an interactive and user-friendly web interface.
 
+## Preview
+![result page](https://github.com/tvay11/Pathfinder/blob/main/screenshot/screenshotmain.png?raw=true)
+
+
 ## Prerequisites
 
 - Java JDK 11 or higher
