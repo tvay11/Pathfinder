@@ -1,11 +1,22 @@
 import React, {useState} from "react";
-import {Box, Button, Divider, Heading, IconButton, ScaleFade, SlideFade} from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Divider,
+    Flex,
+    Heading,
+    IconButton,
+    ScaleFade,
+    SlideFade,
+    useBreakpointValue
+} from "@chakra-ui/react";
 import {AddIcon, DeleteIcon} from "@chakra-ui/icons";
 import {RouteDisplay} from "./RouteDisplay";
 import {Map} from "./Map";
 import {useNavigate} from 'react-router-dom';
 import {PlacesAutocomplete} from "./PlacesAutocomplete";
 import './App.css';
+import RoutePlannerForm from "./RoutePlanner";
 
 export function HomePage() {
     const [start, setStart] = useState(null);
@@ -70,68 +81,22 @@ export function HomePage() {
         }
     };
 
+    const layoutDirection = useBreakpointValue({ base: 'column', md: 'row' });
+    const resultDisplayWidth = useBreakpointValue({ base: '100%', md: '50%' });
+
     return (
-        <div style={{display: 'flex', height: '100vh'}}>
-            <div style={{width: '18%', padding: '1rem'}}>
-                <Heading as="h3" size="lg" style={{paddingLeft:'0.5vw', paddingBottom:'1.5vh'}}>Pathfinder</Heading>
-                <PlacesAutocomplete onSelect={setStart} label="Starting Location"/>
-
-                {waypoints.map((waypoint, index) => (
-                    <div key={waypoint.id}
-                         style={{display: 'flex', alignItems: 'center', marginTop: '10px', width: '100%'}}>
-                        <div style={{flexGrow: 1, marginRight: '10px'}}>
-                            <PlacesAutocomplete
-                                onSelect={(location) => {
-                                    const updatedWaypoints = waypoints.map((wp) =>
-                                        wp.id === waypoint.id ? {...wp, location} : wp
-                                    );
-                                    setWaypoints(updatedWaypoints);
-                                }}
-                                label={`Waypoint ${index + 1}`}
-                            />
-                        </div>
-                        <IconButton
-                            aria-label="Delete waypoint"
-                            icon={<DeleteIcon/>}
-                            onClick={() => removeWaypoint(waypoint.id)}
-                            size="sm"
-                            colorScheme="red"
-                        />
-                    </div>
-                ))}
-                <div style={{marginTop: '10px'}}>
-                    {!isRoundTrip && <PlacesAutocomplete onSelect={setEnd} label="Ending Location"/>}
-
-                </div>
-                <div
-                    style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '10px'}}>
-                    <IconButton
-                        aria-label="Add waypoint"
-                        icon={<AddIcon/>}
-                        onClick={addWaypoint}
-                        size="sm"
-                        colorScheme="teal"
-                    />
-
-                    <label style={{display: 'flex', alignItems: 'center'}}>
-                        <input
-                            type="checkbox"
-                            checked={isRoundTrip}
-                            onChange={(e) => setIsRoundTrip(e.target.checked)}
-                            style={{marginRight: '8px'}}
-                        />
-                        Round Trip
-                    </label>
-                </div>
-                <Button
-                    style={{marginTop: '10px'}}
-                    width="100%"
-                    colorScheme="blue"
-                    onClick={makeRoute}
-                >
-                    Make Route
-                </Button>
-            </div>
+        <Flex direction={layoutDirection} height="100vh">
+            <RoutePlannerForm
+                start={start}
+                setStart={setStart}
+                end={end}
+                setEnd={setEnd}
+                waypoints={waypoints}
+                setWaypoints={setWaypoints}
+                isRoundTrip={isRoundTrip}
+                setIsRoundTrip={setIsRoundTrip}
+                makeRoute={makeRoute}
+            />
 
             <Divider orientation="vertical" />
 
@@ -163,7 +128,7 @@ export function HomePage() {
 
             </div>
 
-        </div>
+        </Flex>
     );
 }
 
