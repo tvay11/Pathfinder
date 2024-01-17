@@ -1,11 +1,13 @@
 import React, {useState} from "react";
-import {Box, Button, Heading, IconButton, Input, List, ListItem} from "@chakra-ui/react";
+import {Box, Button, Divider, Heading, IconButton, ScaleFade, SlideFade} from "@chakra-ui/react";
 import {AddIcon, DeleteIcon} from "@chakra-ui/icons";
-import RouteDisplay from "./RouteDisplay";
-import usePlacesAutocomplete, {getGeocode, getLatLng} from "use-places-autocomplete";
+import {RouteDisplay} from "./RouteDisplay";
 import {Map} from "./Map";
-import { useNavigate } from 'react-router-dom';
-export function Places() {
+import {useNavigate} from 'react-router-dom';
+import {PlacesAutocomplete} from "./PlacesAutocomplete";
+import './App.css';
+
+export function HomePage() {
     const [start, setStart] = useState(null);
     const [end, setEnd] = useState(null);
     const [waypoints, setWaypoints] = useState([]);
@@ -19,6 +21,7 @@ export function Places() {
         setWaypoints(waypoints.filter(waypoint => waypoint.id !== id));
     };
     const navigate = useNavigate();
+    const [searchPerformed, setSearchPerformed] = useState(false);
 
     const makeRoute = () => {
         console.log('Start Location:', start);
@@ -57,7 +60,7 @@ export function Places() {
                 .then(data => {
                     console.log('Route data:', data);
                     setRouteData(data);
-                    // navigate('/Result', { state: { routeData: data } });
+                    setSearchPerformed(true);
                 })
                 .catch(error => {
                     console.error('Error fetching route:', error);
@@ -70,7 +73,7 @@ export function Places() {
     return (
         <div style={{display: 'flex', height: '100vh'}}>
             <div style={{width: '18%', padding: '1rem'}}>
-                <Heading as="h3" size="lg" style={{paddingLeft:'0.5vw'}}>Pathfinder</Heading>
+                <Heading as="h3" size="lg" style={{paddingLeft:'0.5vw', paddingBottom:'1.5vh'}}>Pathfinder</Heading>
                 <PlacesAutocomplete onSelect={setStart} label="Starting Location"/>
 
                 {waypoints.map((waypoint, index) => (
@@ -128,69 +131,39 @@ export function Places() {
                 >
                     Make Route
                 </Button>
-                <RouteDisplay routeData={routeData}/>
             </div>
 
-            <div style={{flexGrow: 1}}>
-                <Map start={start} end={isRoundTrip ? start : end} waypoints={waypoints.map(wp => wp.location)}/>
+            <Divider orientation="vertical" />
+
+            <div style={{ display: 'flex', flexGrow: 1, transition: 'width 0.5s' }}>
+                {searchPerformed && (
+                    <SlideFade in={searchPerformed} offsetX={-30} style={{ width: '50%', overflowY: 'auto' }}>
+                        <div style={{ padding: '1rem' }}>
+                            <RouteDisplay routeData={routeData} />
+                        </div>
+                    </SlideFade>
+                )}
+
+                <Divider orientation="vertical" />
+
+                <Box
+                    width={searchPerformed ? '95%' : '100%'}
+                    height="100%"
+                    pl={searchPerformed ? '1rem' : '0'}
+                    rounded='md'>
+                    <Box
+                        height="100%"
+                        shadow="xl"
+                        bg="white"
+                        rounded='md'>
+                        <Map start={start} end={isRoundTrip ? start : end} waypoints={waypoints.map(wp => wp.location)} />
+                    </Box>
+                </Box>
 
 
             </div>
+
         </div>
     );
 }
 
-function PlacesAutocomplete({onSelect, label}) {
-    const {
-        ready,
-        value,
-        suggestions: {status, data},
-        setValue,
-        clearSuggestions,
-    } = usePlacesAutocomplete({
-        requestOptions: {
-            location: {lat: () => 43.45, lng: () => -80.49},
-            radius: 200 * 1000,
-        },
-    });
-
-    const handleInput = (e) => {
-        setValue(e.target.value);
-    };
-
-    const handleSelect = async (address) => {
-        setValue(address, false);
-        clearSuggestions();
-
-        try {
-            const results = await getGeocode({address});
-            const {lat, lng} = await getLatLng(results[0]);
-            onSelect({lat, lng});
-        } catch (error) {
-            console.error("Error: ", error);
-        }
-    };
-
-    return (
-        <Box position="relative">
-            <Input style={{width: '100%'}}
-                   value={value}
-                   onChange={handleInput}
-                   disabled={!ready}
-                   placeholder={label}
-                   size="md"
-            />
-            {status === "OK" && (
-                <List position="absolute" width="full" bg="white" maxHeight="300px" overflowY="auto" zIndex="1000"
-                      boxShadow="md">
-                    {data.map(({place_id, description}) => (
-                        <ListItem key={place_id} paddingX="4" paddingY="2" cursor="pointer" _hover={{bg: "gray.100"}}
-                                  onClick={() => handleSelect(description)}>
-                            {description}
-                        </ListItem>
-                    ))}
-                </List>
-            )}
-        </Box>
-    );
-}

@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react';
 import {useLoadScript} from '@react-google-maps/api';
-// import '@reach/combobox/styles.css';
-import {ChakraProvider, Switch} from "@chakra-ui/react";
-import {Places} from "./Places";
+import {ChakraProvider} from "@chakra-ui/react";
+import {HomePage} from "./HomePage";
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import ResultPage from "./RoutePage";
+import {Header} from "./header";
 
 function App() {
   const { isLoaded, loadError } = useLoadScript({
@@ -23,8 +22,7 @@ function App() {
         <Router>
             <ChakraProvider>
                 <Routes>
-                    <Route path="/" element={<Places />} />
-                    <Route path="/Result" element={<ResultPage />} />
+                    <Route path="/" element={<HomePage />} />
                 </Routes>
             </ChakraProvider>
         </Router>

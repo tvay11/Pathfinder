@@ -25,8 +25,8 @@ export function Map({start, end, waypoints}) {
     }, [start, end, waypoints]);
 
     return (
-        <div style={{width: '100%', height: '95%', overflow: 'scroll', position: 'relative'}}>
-            <div style={{height: '100%', transform: 'translateY(5%)'}}>
+        <div style={{width: '100%', height: '100%', overflow: 'scroll', position: 'relative'}}>
+            <div style={{height: '100%', transform: 'translateY(0%)'}}>
                 <GoogleMap
                     ref={mapRef}
                     zoom={10}

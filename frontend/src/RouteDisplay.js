@@ -1,63 +1,62 @@
-import React from 'react';
-import {
-    Box,
-    Text,
-    VStack,
-    Divider,
-    Heading,
-    Container
-} from '@chakra-ui/react';
+import React, { useMemo } from 'react';
+import { Box, Text, VStack, Divider, Heading, Container, Badge, Button } from '@chakra-ui/react';
 
-
-
-const RouteDisplay = ({ routeData }) => {
+export function RouteDisplay({ routeData }) {
+    const googleMapsLink = useMemo(() => {
         if (!routeData || !routeData.legs) {
-            return <Text></Text>;
+            return null;
         }
 
-        return (
-            <Container maxW="container.md">
-                <Box
-                    maxHeight="600px"
-                    overflowY="scroll"
-                    maxWidth="400px"
-                    sx={{
-                        '&::-webkit-scrollbar': {
-                            display: 'none',
-                        },
-                        '-ms-overflow-style': 'none',
-                        'scrollbarWidth': 'none',
-                    }}
-                >
-                    <VStack spacing={5} align="stretch">
-                        <Heading as="h6" size="md" style ={{marginTop:'3vh'}}>Route Details</Heading>
-                        {routeData.legs.map((leg, index) => (
-                            <Box key={index} p={4} shadow="md" borderWidth="1px" borderRadius="md">
-                                <Text fontWeight="bold">Leg {index + 1}</Text>
-                                <Text>
-                                    <span style={{ fontWeight: 'normal' }}>Start:</span>
-                                    <span style={{ fontWeight: 'bold' }}> {leg.startAddress}</span>
-                                </Text>
-                                <Text>
-                                    <span style={{ fontWeight: 'normal' }}>End:</span>
-                                    <span style={{ fontWeight: 'bold' }}> {leg.endAddress}</span>
-                                </Text>
-                                <Text>Distance: {leg.distance}</Text>
-                                <Text>Duration: {leg.duration}</Text>
-                            </Box>
-                        ))}
+        const origin = routeData.legs[0].startAddress;
+        const destination = routeData.legs[routeData.legs.length - 1].endAddress;
+        const waypoints = routeData.legs.slice(1, -1).map(leg => leg.startAddress).join('|');
 
-                        ))}
-                        <Divider />
-                        <Box p={4}>
-                            <Text fontWeight="bold">Total Distance: {routeData.totalDistance}</Text>
-                            <Text fontWeight="bold">Total Duration: {routeData.totalDuration}</Text>
-                        </Box>
-                    </VStack>
-                </Box>
-            </Container>
-        );
+        const baseUrl = 'https://www.google.com/maps/dir/?api=1';
+        const urlParams = new URLSearchParams({
+            origin: origin,
+            destination: destination,
+            waypoints: waypoints
+        });
 
+        return `${baseUrl}&${urlParams.toString()}`;
+    }, [routeData]);
+
+    const openGoogleMaps = () => {
+        if (googleMapsLink) {
+            window.open(googleMapsLink, '_blank');
+        }
     };
 
-export default RouteDisplay;
+    if (!routeData || !routeData.legs) {
+        return <Text>No route data available.</Text>;
+    }
+
+    return (
+        <Container maxW="container.md" p={4}>
+            <Box bg="gray.50" boxShadow="xl" rounded="md" p={4} overflowY="auto">
+                <VStack spacing={3} align="stretch">
+                    <Heading as="h3" size="lg" mb={4}>Route Details</Heading>
+                    {routeData.legs.map((leg, index) => (
+                        <Box key={index} bg="gray.50" p={4} shadow="md" borderWidth="1px" borderRadius="md">
+                            <Badge colorScheme="blue" mb={2}>Leg {index + 1}</Badge>
+                            <Text><strong>Start:</strong> {leg.startAddress}</Text>
+                            <Text><strong>End:</strong> {leg.endAddress}</Text>
+                            <Text>Distance: {leg.distance}</Text>
+                            <Text>Duration: {leg.duration}</Text>
+                        </Box>
+                    ))}
+                    <Divider my={0} />
+                    <Box bg="gray.50" p={4} shadow="md" borderWidth="1px" borderRadius="md">
+                        <Text fontWeight="bold">Total Distance: {routeData.totalDistance}</Text>
+                        <Text fontWeight="bold">Total Duration: {routeData.totalDuration}</Text>
+                        {googleMapsLink && (
+                            <Button colorScheme="blue" onClick={openGoogleMaps} mt={4}>
+                                Open in Google Maps
+                            </Button>
+                        )}
+                    </Box>
+                </VStack>
+            </Box>
+        </Container>
+    );
+}
