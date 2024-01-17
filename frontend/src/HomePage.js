@@ -149,7 +149,7 @@ export function HomePage() {
                 <Box
                     width={searchPerformed ? '95%' : '100%'}
                     height="100%"
-                    pl={searchPerformed ? '1rem' : '0'}
+                    pl={searchPerformed ? '1rem' : '1rem'}
                     rounded='md'>
                     <Box
                         height="100%"
