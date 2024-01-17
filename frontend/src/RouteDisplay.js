@@ -10,7 +10,7 @@ import {
 
 
 
-    const RouteDisplay = ({ routeData }) => {
+const RouteDisplay = ({ routeData }) => {
         if (!routeData || !routeData.legs) {
             return <Text></Text>;
         }
@@ -57,7 +57,7 @@ import {
                 </Box>
             </Container>
         );
-        
+
     };
 
-    export default RouteDisplay;
+export default RouteDisplay;
