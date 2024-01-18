@@ -7,7 +7,7 @@ This project is a Java Spring application that integrates with Google Map API. I
 
 ## Preview
 ![result page](https://github.com/tvay11/Pathfinder/blob/main/screenshot/screenshotmain.png)
-
+![phone result](https://github.com/tvay11/Pathfinder/blob/main/screenshot/screenshotforPhone.png)
 
 ## Prerequisites
 
