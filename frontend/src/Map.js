@@ -1,46 +1,49 @@
-import React, {useEffect, useMemo, useRef} from "react";
-import {GoogleMap, Marker} from "@react-google-maps/api";
+import React, {useEffect, useMemo, useRef} from 'react';
+import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
 
-export function Map({start, end, waypoints}) {
+export function Map({ start, end, waypoints }) {
     const mapRef = useRef(null);
     const center = useMemo(() => ({lat: 38.6270, lng: -90.1994}), []);
+    const directionsServiceRef = useRef(new window.google.maps.DirectionsService());
+    const directionsRendererRef = useRef(new window.google.maps.DirectionsRenderer());
+    const waypointsRef = waypoints.map(waypoint => ({ location: waypoint, stopover: true }));
 
     useEffect(() => {
-        if (mapRef.current && start) {
-            const bounds = new window.google.maps.LatLngBounds();
-            bounds.extend(start);
-
-            if (end) {
-                bounds.extend(end);
-            }
-
-            waypoints.forEach(waypoint => {
-                if (waypoint) {
-                    bounds.extend(new window.google.maps.LatLng(waypoint.lat, waypoint.lng));
+        if (mapRef.current && start && end) {
+            directionsServiceRef.current.route({
+                origin: start,
+                destination: end,
+                waypoints: waypointsRef,
+                travelMode: window.google.maps.TravelMode.DRIVING,
+            }, (result, status) => {
+                if (status === window.google.maps.DirectionsStatus.OK) {
+                    directionsRendererRef.current.setDirections(result);
+                } else {
+                    console.error(`error fetching directions ${result}`);
                 }
             });
-
-            mapRef.current.fitBounds(bounds);
         }
     }, [start, end, waypoints]);
 
+    useEffect(() => {
+        if (mapRef.current) {
+            directionsRendererRef.current.setMap(mapRef.current);
+        }
+    }, []);
+
     return (
-        <div style={{width: '100%', height: '100%', overflow: 'scroll', position: 'relative'}}>
-            <div style={{height: '100%', transform: 'translateY(0%)'}}>
-                <GoogleMap
-                    ref={mapRef}
-                    zoom={10}
-                    center={center}
-                    mapContainerStyle={{width: '100%', height: '100%'}}
-                    onLoad={map => mapRef.current = map}
-                >
-                    {start && <Marker position={start}/>}
-                    {end && <Marker position={end}/>}
-                    {waypoints.map((waypoint, index) => (
-                        waypoint && <Marker key={index} position={waypoint}/>
-                    ))}
-                </GoogleMap>
-            </div>
-        </div>
+        <GoogleMap
+            ref={mapRef}
+            zoom={10}
+            center={center}
+            mapContainerStyle={{ width: '100%', height: '100%' }}
+            onLoad={map => {
+                mapRef.current = map;
+                directionsRendererRef.current.setMap(map);
+            }}
+        >
+            {start && <Marker position={start} />}
+            {end && <Marker position={end} />}
+        </GoogleMap>
     );
 }

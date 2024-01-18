@@ -68,7 +68,7 @@ export function HomePage() {
     const dividerOrientation = useBreakpointValue({ base: 'horizontal', md: 'vertical' });
 
     return (
-        <Flex direction={layoutDirection} height="100vh">
+        <Flex direction={layoutDirection} height="100vh"  overflowY="auto">
             <RoutePlannerForm
                 start={start}
                 setStart={setStart}
@@ -81,34 +81,32 @@ export function HomePage() {
                 makeRoute={makeRoute}
                 order={{ base: 1, md: 1 }}
             />
-
-            <Divider orientation={dividerOrientation} />
-
+            <Divider orientation={dividerOrientation} borderColor="gray.300" />
 
             {searchPerformed && (
-                <SlideFade in={searchPerformed} offsetX={{ base: 0, md: -30 }} style={{ width: { base: '100%', md: '50%' }, order: 2 }}>
+
+                <SlideFade in={searchPerformed} offsetX={{ base: 0, md: -30 }} style={{ order: 2 }}>
                     <Box padding="1rem" width="100%" height={{ base: 'auto', md: '100%' }} overflowY="auto">
                         <RouteDisplay routeData={routeData} />
                     </Box>
                 </SlideFade>
             )}
 
-             <Divider orientation={dividerOrientation} />
-
             <Box
                 width={{ base: '100%', md: searchPerformed ? '55%' : '85%' }}
                 height="100%"
                 order={{ base: 2, md: 2 }}
-                p1={searchPerformed ? '1rem' : 0}>
+                style={{ transition: 'all 0.5s ease-in-out' }}
+            >
                 <Box height="100%"
                      shadow = "xl"
                      bg="white"
                      rounded ="md"
-                     overflowY="auto"
                 >
                 <Map start={start} end={isRoundTrip ? start : end} waypoints={waypoints.map(wp => wp.location)} />
                 </Box>
             </Box>
+
         </Flex>
     );
 }

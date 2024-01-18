@@ -36,6 +36,7 @@ export function RouteDisplay({ routeData }) {
             <Box bg="gray.50" boxShadow="xl" rounded="md" p={4} overflowY="auto">
                 <VStack spacing={3} align="stretch">
                     <Heading as="h3" size="lg" mb={4}>Route Details</Heading>
+
                     {routeData.legs.map((leg, index) => (
                         <Box key={index} bg="gray.50" p={4} shadow="md" borderWidth="1px" borderRadius="md">
                             <Badge colorScheme="blue" mb={2}>Leg {index + 1}</Badge>
@@ -45,6 +46,7 @@ export function RouteDisplay({ routeData }) {
                             <Text>Duration: {leg.duration}</Text>
                         </Box>
                     ))}
+
                     <Divider my={0} />
                     <Box bg="gray.50" p={4} shadow="md" borderWidth="1px" borderRadius="md">
                         <Text fontWeight="bold">Total Distance: {routeData.totalDistance}</Text>

@@ -23,7 +23,7 @@ const RoutePlannerForm = ({
     };
 
     return (
-        <Box width={{ base: '100%', md: '18%' }} padding="1rem">
+        <Box width={{ base: '100%', md: '20%' }} padding="1rem" >
             <Heading as="h3" size="lg" mb="1.5vh">Pathfinder</Heading>
             <PlacesAutocomplete onSelect={setStart} label="Starting Location" />
             {waypoints.map((waypoint, index) => (
