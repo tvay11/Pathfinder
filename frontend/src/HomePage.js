@@ -94,9 +94,15 @@ export function HomePage() {
 
             <Box
                 width={{ base: '100%', md: searchPerformed ? '55%' : '85%' }}
-                height="100%"
+                height="95%"
                 order={{ base: 2, md: 2 }}
-                style={{ transition: 'all 0.5s ease-in-out' }}
+                style={{
+                    transition: 'all 0.5s ease-in-out',
+                    position: 'relative',
+                    top: '2.5%',
+                    left: '-1%',
+                    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'
+                }}
             >
                 <Box height="100%"
                      shadow = "xl"
