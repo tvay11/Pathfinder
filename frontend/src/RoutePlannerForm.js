@@ -2,7 +2,10 @@ import React from "react";
 import { Box, Heading, IconButton, Button } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { PlacesAutocomplete } from "./PlacesAutocomplete";
+import { motion } from "framer-motion";
 
+const MotionDiv = motion.div;
+const MotionButton = motion(Button);
 const RoutePlannerForm = ({
                               start,
                               setStart,
@@ -21,12 +24,26 @@ const RoutePlannerForm = ({
     const addWaypoint = () => {
         setWaypoints([...waypoints, { id: Date.now(), location: null }]);
     };
+    const MotionIconButton = motion(IconButton);
 
     return (
         <Box width={{ base: '100%', md: '20%' }} padding="1rem" >
             <Heading as="h3" size="lg" mb="1.5vh">Pathfinder</Heading>
+            <MotionDiv
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
             <PlacesAutocomplete onSelect={setStart} label="Starting Location" />
+            </MotionDiv>
             {waypoints.map((waypoint, index) => (
+                <MotionDiv
+                    key={waypoint.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}
+                >
                 <div key={waypoint.id} style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
                     <div style={{ flexGrow: 1, marginRight: '10px' }}>
                         <PlacesAutocomplete
@@ -39,7 +56,9 @@ const RoutePlannerForm = ({
                             label={`Waypoint ${index + 1}`}
                         />
                     </div>
-                    <IconButton
+                    <MotionIconButton
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
                         aria-label="Delete waypoint"
                         icon={<DeleteIcon />}
                         onClick={() => removeWaypoint(waypoint.id)}
@@ -47,12 +66,19 @@ const RoutePlannerForm = ({
                         colorScheme="red"
                     />
                 </div>
+                </MotionDiv>
             ))}
             {!isRoundTrip && (
-                <PlacesAutocomplete onSelect={setEnd} label="Ending Location" />
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+                    <div style={{ flexGrow: 1, marginRight: '10px' }}>
+                        <PlacesAutocomplete onSelect={setEnd} label="Ending Location" />
+                    </div>
+                </div>
             )}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '10px' }}>
-                <IconButton
+                <MotionIconButton
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                     aria-label="Add waypoint"
                     icon={<AddIcon />}
                     onClick={addWaypoint}
@@ -69,14 +95,16 @@ const RoutePlannerForm = ({
                     Round Trip
                 </label>
             </div>
-            <Button
+            <MotionButton
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 mt="10px"
                 width="100%"
                 colorScheme="blue"
                 onClick={makeRoute}
             >
                 Make Route
-            </Button>
+            </MotionButton>
         </Box>
     );
 };

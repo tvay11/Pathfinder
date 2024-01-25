@@ -7,7 +7,7 @@ import {
 import {RouteDisplay} from "./RouteDisplay";
 import {Map} from "./Map";
 import './App.css';
-import RoutePlannerForm from "./RoutePlanner";
+import RoutePlannerForm from "./RoutePlannerForm";
 
 export function HomePage() {
     const [start, setStart] = useState(null);
@@ -100,7 +100,7 @@ export function HomePage() {
                     transition: 'all 0.5s ease-in-out',
                     position: 'relative',
                     top: '2.5%',
-                    left: '-1%',
+                    left: searchPerformed ? '-1%' : '0%',
                     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'
                 }}
             >
