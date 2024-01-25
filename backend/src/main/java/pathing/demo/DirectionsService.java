@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class DirectionsService {
 
@@ -36,8 +37,8 @@ public class DirectionsService {
         StringBuilder result = new StringBuilder(parts[0]);
 
         for (int i = 1; i < parts.length; i++) {
-            String[] coordinatesr = parts[i].split("-");
-            String formattedCoordinate = coordinatesr[0] + ", -" + coordinatesr[1];
+            String[] coords = parts[i].split("-");
+            String formattedCoordinate = coords[0] + ", -" + coords[1];
             result.append("|").append(formattedCoordinate);
         }
 
@@ -55,7 +56,6 @@ public class DirectionsService {
                 .encode()
                 .toUri();
 
-//        System.out.println(uri);
         String response = restTemplate.getForObject(uri, String.class);
         return parseDirections(response);
     }
@@ -162,4 +162,3 @@ class Route {
         this.totalDuration = totalDuration;
     }
 }
-
